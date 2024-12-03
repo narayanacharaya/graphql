@@ -8,21 +8,11 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { PostModule } from './post/post.module';
+import { AppGateway } from './sockets/gateways/app.gateway'; // Import your gateway
+// import { NotificationService } from './sockets/services/notification.service'; // Import any WebSocket-related services
+// import { IoAdapter } from '@nestjs/platform-socket.io';
+// import { SocketIoAdapter } from './sockets/adapters/socket-io.adapter';
 
-// @Module({
-//   imports: [
-//     GraphQLModule.forRoot<ApolloDriverConfig>({
-//       driver: ApolloDriver, // Required "driver" option
-//       autoSchemaFile: true, // Automatically generates the schema
-//       context: ({ req, res }) => {
-//         console.log('Request Headers in Context:', req.headers);
-//         return { req, res };
-//       },
-//     }),
-//   ],
-//   providers: [AuthResolver, UserResolver, PostResolver], // Register the resolvers
-// })
-// export class AppModule {}
 @Module({
   imports: [
     AuthModule,
@@ -30,13 +20,27 @@ import { PostModule } from './post/post.module';
     PrismaModule,
     PostModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver, // Required "driver" option
-      autoSchemaFile: true, // Automatically generates the schema
+      driver: ApolloDriver,
+      autoSchemaFile: true,
       context: ({ req, res }) => {
         return { req, res };
       },
     }),
   ],
-  providers: [AuthResolver, UserResolver, PostResolver],
+  providers: [
+    AuthResolver,
+    UserResolver,
+    PostResolver,
+    // AppGateway,
+    // {
+    //   provide: IoAdapter,
+    //   useClass: SocketIoAdapter, // Use your custom adapter here
+    // },
+    // NotificationService,
+  ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private readonly appGateway: AppGateway) {
+    console.log('AppModule initialized. AppGateway injected.');
+  }
+}
