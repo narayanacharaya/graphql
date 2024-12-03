@@ -9,9 +9,7 @@ import { UserModule } from './user/user.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { PostModule } from './post/post.module';
 import { AppGateway } from './sockets/gateways/app.gateway'; // Import your gateway
-// import { NotificationService } from './sockets/services/notification.service'; // Import any WebSocket-related services
-// import { IoAdapter } from '@nestjs/platform-socket.io';
-// import { SocketIoAdapter } from './sockets/adapters/socket-io.adapter';
+import { NotificationService } from './sockets/services/notification.service';
 
 @Module({
   imports: [
@@ -31,12 +29,8 @@ import { AppGateway } from './sockets/gateways/app.gateway'; // Import your gate
     AuthResolver,
     UserResolver,
     PostResolver,
-    // AppGateway,
-    // {
-    //   provide: IoAdapter,
-    //   useClass: SocketIoAdapter, // Use your custom adapter here
-    // },
-    // NotificationService,
+    AppGateway,
+    NotificationService,
   ],
 })
 export class AppModule {
