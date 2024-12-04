@@ -9,6 +9,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { OnModuleInit } from '@nestjs/common';
+import { SOCKET_EVENTS } from '../events.types';
 @WebSocketGateway({
   cors: {
     origin: '*',
@@ -42,7 +43,7 @@ export class AppGateway
     console.log(`Client disconnected: ${client.id}`);
   }
 
-  @SubscribeMessage('message')
+  @SubscribeMessage(SOCKET_EVENTS.CHAT_MESSAGE)
   handleMessage(
     @MessageBody() data: string,
     @ConnectedSocket() client: Socket,
@@ -51,7 +52,7 @@ export class AppGateway
     return `Server response: ${data}`;
   }
 
-  @SubscribeMessage('joinRoom')
+  @SubscribeMessage(SOCKET_EVENTS.JOIN_ROOM)
   handleJoinRoom(
     @MessageBody() room: string,
     @ConnectedSocket() client: Socket,

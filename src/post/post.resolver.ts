@@ -1,7 +1,6 @@
-// src/post/post.resolver.ts
 import { Resolver, Query } from '@nestjs/graphql';
 import { PostService } from './post.service';
-import { PostType } from './post.schema'; // GraphQL type for Post
+import { PostType } from './post.schema';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/gurd/auth.gurd';
 

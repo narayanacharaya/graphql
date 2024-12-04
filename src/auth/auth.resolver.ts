@@ -1,4 +1,3 @@
-// src/auth/resolvers/auth.resolver.ts
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { TokenResponse } from './token-response.dto';

@@ -1,6 +1,5 @@
-// src/post/schema/post.schema.ts
-import { ObjectType, Field, ID } from '@nestjs/graphql'; // NestJS GraphQL decorators
-import { Post } from '@prisma/client'; // Import the Prisma Post model if needed (optional)
+import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { Post } from '@prisma/client';
 
 @ObjectType()
 @ObjectType()

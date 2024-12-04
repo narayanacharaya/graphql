@@ -2,7 +2,7 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UserService } from './user.service'; // Import the user service
 import { User } from '@prisma/client'; // Import Prisma User type
-import { UserType } from './user.dto';
+import { UserResponse, UserType } from './user.dto';
 
 @Resolver(() => UserType)
 export class UserResolver {
@@ -10,7 +10,7 @@ export class UserResolver {
 
   // Query to get all users
   @Query(() => [UserType])
-  async users(): Promise<User[]> {
+  async users(): Promise<UserResponse[]> {
     return this.userService.getAllUsers();
   }
 

@@ -7,7 +7,6 @@ export class PrismaService extends PrismaClient {
     super();
   }
 
-  // If needed, you can implement cleanup logic on module destroy
   onModuleDestroy() {
     this.$disconnect();
   }

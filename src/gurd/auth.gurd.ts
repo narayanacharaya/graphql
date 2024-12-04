@@ -1,4 +1,4 @@
-// src/guards/auth.guard.ts
+
 import {
   Injectable,
   CanActivate,
@@ -28,8 +28,6 @@ export class AuthGuard implements CanActivate {
 
     try {
       const payload = verifyToken(token);
-
-      // Attach user ID to the GraphQL context for use in resolvers
       ctx.req.userId = payload.sub;
       return true;
     } catch (error) {

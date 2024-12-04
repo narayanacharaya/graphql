@@ -8,8 +8,14 @@ export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
 
   // Method to get all users
-  async getAllUsers(): Promise<User[]> {
-    return this.prismaService.user.findMany();
+  async getAllUsers(): Promise<Pick<User, 'name' | 'email' | 'id'>[]> {
+    return this.prismaService.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+    });
   }
   async getUserByEmail(email: string): Promise<User> {
     return this.prismaService.user.findFirst({ where: { email: email } });

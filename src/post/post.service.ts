@@ -1,4 +1,3 @@
-// src/post/services/post.service.ts
 import { Injectable } from '@nestjs/common';
 
 import { Post } from '@prisma/client';
@@ -23,7 +22,6 @@ export class PostService {
     }));
   }
 
-  // Create a new post
   async createPost(
     createPostDto: CreatePostDto,
     authorId: string,

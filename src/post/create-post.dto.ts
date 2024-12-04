@@ -1,5 +1,3 @@
-// src/post/dto/create-post.dto.ts
-
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
