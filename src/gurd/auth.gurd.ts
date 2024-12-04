@@ -1,4 +1,3 @@
-
 import {
   Injectable,
   CanActivate,
@@ -6,11 +5,11 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { verifyToken } from 'src/utils/jwt.helper';
+import { JwtService } from 'src/utils/jwt.helper';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor() {}
+  constructor(private readonly jwtService: JwtService) {}
 
   canActivate(context: ExecutionContext): boolean {
     const ctx = GqlExecutionContext.create(context).getContext();
@@ -19,7 +18,6 @@ export class AuthGuard implements CanActivate {
     if (!authHeader) {
       throw new UnauthorizedException('Authorization header is missing');
     }
-
     const [bearer, token] = authHeader.split(' ');
 
     if (bearer !== 'Bearer' || !token) {
@@ -27,11 +25,16 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const payload = verifyToken(token);
-      ctx.req.userId = payload.sub;
+      const decoded = this.jwtService.verifyToken(token);
+      if (typeof decoded === 'object' && 'userId' in decoded) {
+        ctx.req.userId = decoded.userId;
+      }
+     
       return true;
     } catch (error) {
-      throw new UnauthorizedException('Invalid or expired token' + error);
+      throw new UnauthorizedException(
+        'Invalid or expired token: ' + error.message,
+      );
     }
   }
 }

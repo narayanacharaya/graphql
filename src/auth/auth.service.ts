@@ -1,8 +1,7 @@
-// src/auth/services/auth.service.ts
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserService } from 'src/user/user.service';
-import { generateTokens } from 'src/utils/jwt.helper';
+import { JwtService } from 'src/utils/jwt.helper';
 import { Password } from 'src/utils/password.helper';
 
 @Injectable()
@@ -10,6 +9,7 @@ export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly prisma: PrismaService,
+    private readonly jwtService: JwtService,
   ) {}
 
   // Signup logic
@@ -31,8 +31,9 @@ export class AuthService {
       data.name,
       hashedPassword,
     );
-
-    const token = generateTokens(newUser.id.toString());
+    console.log(newUser.id);
+    // Generate the token using JwtService
+    const token = this.jwtService.generateTokens(newUser.id).accessToken;
 
     return { token, user: newUser };
   }
@@ -45,7 +46,8 @@ export class AuthService {
     const validPassword = await Password.compare(password, user.password);
     if (!validPassword) throw new Error('Invalid credentials');
 
-    const token = generateTokens(user.id.toString());
+    // Generate the token using JwtService
+    const token = this.jwtService.generateTokens(user.id).accessToken;
 
     return { token, user };
   }

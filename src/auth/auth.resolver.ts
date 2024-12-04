@@ -22,7 +22,7 @@ export class AuthResolver {
         name,
         password,
       });
-      return new TokenResponse(token.accessToken);
+      return new TokenResponse(token);
     } catch (error) {
       console.error(error);
       throw new Error('Error during signup: ' + error);
@@ -35,6 +35,6 @@ export class AuthResolver {
     @Args('password') password: string,
   ): Promise<TokenResponse> {
     const { token } = await this.authService.login(email, password);
-    return new TokenResponse(token.accessToken);
+    return new TokenResponse(token);
   }
 }

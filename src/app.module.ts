@@ -8,8 +8,11 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { PostModule } from './post/post.module';
-import { AppGateway } from './sockets/gateways/app.gateway'; // Import your gateway
+import { AppGateway } from './sockets/gateways/app.gateway';
 import { NotificationService } from './sockets/services/notification.service';
+import { ConfigModule } from '@nestjs/config';
+import { UtilsModule } from './utils/utils.module';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -17,6 +20,10 @@ import { NotificationService } from './sockets/services/notification.service';
     UserModule,
     PrismaModule,
     PostModule,
+    UtilsModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
@@ -31,6 +38,7 @@ import { NotificationService } from './sockets/services/notification.service';
     PostResolver,
     AppGateway,
     NotificationService,
+    AppService,
   ],
 })
 export class AppModule {
