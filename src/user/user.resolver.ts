@@ -1,7 +1,7 @@
 // user.resolver.ts
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { UserService } from './user.service'; // Import the user service
-import { User } from '@prisma/client'; // Import Prisma User type
+import { Resolver, Query } from '@nestjs/graphql';
+import { UserService } from './user.service';
+
 import { UserResponse, UserType } from './user.dto';
 
 @Resolver(() => UserType)
@@ -15,12 +15,12 @@ export class UserResolver {
   }
 
   // Mutation to create a new user
-  @Mutation(() => UserType)
-  async createUser(
-    @Args('email') email: string,
-    @Args('name', { nullable: true }) name: string,
-    @Args('password') password: string,
-  ): Promise<User> {
-    return this.userService.createUser(email, name, password);
-  }
+  // @Mutation(() => UserType)
+  // async createUser(
+  //   @Args('email') email: string,
+  //   @Args('name', { nullable: true }) name: string,
+  //   @Args('password') password: string,
+  // ): Promise<User> {
+  //   return this.userService.createUser(email, name, password);
+  // }
 }
