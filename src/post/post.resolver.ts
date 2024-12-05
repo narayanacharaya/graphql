@@ -1,22 +1,29 @@
-import { Resolver, Query } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { PostService } from './post.service';
 import { PostType } from './post.schema';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/gurd/auth.gurd';
+import { CreatePostDto } from './create-post.dto';
 
 @Resolver()
 @UseGuards(AuthGuard)
 export class PostResolver {
   constructor(private readonly postService: PostService) {}
-  @Query(() => String)
-  getAuthStatus(): string {
-    return 'Auth is working!';
-  }
-  // Ensure the method signature matches the return type
-  @Query(() => [PostType]) // Declare the query return type as an array of PostType
+
+  @Query(() => [PostType])
   async posts(): Promise<PostType[]> {
-    // Ensure the return type is Promise<PostType[]>
-    const posts = await this.postService.getAllPosts();
-    return posts; // Return the transformed PostType array
+    return await this.postService.getAllPosts();
+  }
+
+  @Mutation(() => PostType)
+  async createPost(
+    @Args('input') input: CreatePostDto,
+    @Context() context: any,
+  ): Promise<PostType> {
+    const userId = context.req.userId;
+    if (!userId) {
+      throw new Error('Unauthorized for post creation');
+    }
+    return await this.postService.createPost(input, userId);
   }
 }

@@ -14,7 +14,7 @@ export class AuthGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const ctx = GqlExecutionContext.create(context).getContext();
     const authHeader = ctx.req.headers['authorization'];
-
+    console.log('Auth header: ' + authHeader);
     if (!authHeader) {
       throw new UnauthorizedException('Authorization header is missing');
     }
@@ -27,9 +27,10 @@ export class AuthGuard implements CanActivate {
     try {
       const decoded = this.jwtService.verifyToken(token);
       if (typeof decoded === 'object' && 'userId' in decoded) {
+        console.log( " user is authenticated by gaurd ")
         ctx.req.userId = decoded.userId;
       }
-     
+
       return true;
     } catch (error) {
       throw new UnauthorizedException(
